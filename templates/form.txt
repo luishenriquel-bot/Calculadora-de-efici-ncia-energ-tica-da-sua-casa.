@@ -1,0 +1,15 @@
+Nome: Luis Kunkel
+Email: name@example.com
+Endere�o: ------------------
+Data: 2026-05-19
+--------------------------------------------------
+Nome: Luis Kunkel
+Email: name@example.com
+Endere�o: -------------------------
+Data: 2018-10-06
+--------------------------------------------------
+Nome: Luis Kunkel 
+Email: name@example.com
+Endere�o: ---------------
+Data: 6767-02-05
+--------------------------------------------------
