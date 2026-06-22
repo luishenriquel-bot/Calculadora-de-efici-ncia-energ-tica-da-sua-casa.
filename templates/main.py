@@ -1,0 +1,89 @@
+# Importações
+from flask import Flask, render_template, request
+
+
+app = Flask(__name__)
+
+def result_calculate(size, lights, device):
+    # Variáveis usadas para o cálculo do consumo dos aparelhos
+    home_coef = 100
+    light_coef = 0.04
+    devices_coef = 5   
+    return size * home_coef + lights * light_coef + device * devices_coef 
+
+# Primeira página
+@app.route('/')
+def index():
+    return render_template('index.html')
+# Segunda página
+@app.route('/<size>')
+def lights(size):
+    return render_template(
+                            'lights.html', 
+                            size=size
+                           )
+
+# Terceira página
+@app.route('/<size>/<lights>')
+def electronics(size, lights):
+    return render_template(
+                            'electronics.html',                           
+                            size = size, 
+                            lights = lights                           
+                           )
+
+# Cálculo
+@app.route('/<size>/<lights>/<device>')
+def end(size, lights, device):
+    return render_template('end.html', 
+                            result=result_calculate(int(size),
+                                                    int(lights), 
+                                                    int(device)
+                                                    )
+                        )
+# O formulário
+@app.route('/form')
+def form():
+    return render_template('form.html')
+
+# Resultados do formulário
+@app.route('/submit', methods=['POST'])
+def submit_form():
+    # Declarar variáveis para a coleta dos dados
+    name = request.form['name']
+    email = request.form['email']  
+    address = request.form['address']
+    date = request.form['date']
+    
+    # Salvar dados no arquivo form.txt
+    with open('form.txt', 'a') as f:
+        f.write(f'Nome: {name}\n')
+        f.write(f'Email: {email}\n')
+        f.write(f'Endereço: {address}\n')
+        f.write(f'Data: {date}\n')
+        f.write('-' * 50 + '\n')
+    
+    return render_template('form_result.html', 
+                           # Coloque as variáveis aqui
+                           name=name,
+                           email=email,
+                           address=address,
+                           date=date
+                           )
+
+# Meme Generator
+@app.route('/meme', methods=['GET', 'POST'])
+def meme_generator():
+    if request.method == 'POST':
+        # Declarar variáveis para armazenar as informações dos campos de entrada
+        text_top = request.form['text_top']
+        text_bottom = request.form['text_bottom']
+        
+        # Exibir as variáveis nos templates
+        return render_template('meme.html',
+                               text_top=text_top,
+                               text_bottom=text_bottom
+                               )
+    return render_template('meme_form.html')
+
+app.run(debug=True)
